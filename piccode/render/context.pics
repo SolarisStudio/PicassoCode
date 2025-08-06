@@ -1,0 +1,8 @@
+
+
+Render :: module {
+  getContext :: () = pic_nat_get_gfx()
+	
+  drawLine :: (ctx, startx, starty, endx, endy) = pic_nat_draw_line(ctx, startx, starty, endx, endy)
+}
+
