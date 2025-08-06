@@ -116,12 +116,8 @@ public class CanvasFrame extends JPanel implements MouseListener, MouseMotionLis
 		g2.setColor(Color.BLACK);
 		gfx = g2;
 		if (start && file != null && code != null) {
-			SwingUtilities.invokeLater(() -> {
 				AccessFrame.msgs.setText("");
-				new Thread(() -> compileFrame())
-								.start();
-			});
-			start = false;
+				compileFrame();
 		}
 
 		drawSelection(g2);
@@ -131,6 +127,7 @@ public class CanvasFrame extends JPanel implements MouseListener, MouseMotionLis
 	}
 
 	private PiccodeValue compileFrame() {
+		Context.top.resetContext();
 		var result = Compiler.compile(file, code);
 		return result;
 	}
