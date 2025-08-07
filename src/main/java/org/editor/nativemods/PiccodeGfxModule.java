@@ -74,7 +74,7 @@ public class PiccodeGfxModule {
 			var y2 = (int) (double) ((PiccodeNumber) _y2).raw();
 
 			gfx.setColor(Color.black);
-			gfx.drawRect(x1, y1, x2, y2);
+			gfx.drawLine(x1, y1, x2, y2);
 			return obj;
 		}, null);
 		
