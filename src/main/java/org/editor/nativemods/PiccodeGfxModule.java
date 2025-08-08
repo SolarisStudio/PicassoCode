@@ -9,6 +9,7 @@ import org.piccode.rt.Context;
 import org.piccode.rt.PiccodeException;
 import org.piccode.rt.PiccodeNumber;
 import org.piccode.rt.PiccodeObject;
+import org.piccode.rt.PiccodeReference;
 import org.piccode.rt.PiccodeString;
 import org.piccode.rt.PiccodeUnit;
 import org.piccode.rt.PiccodeValue;
@@ -24,65 +25,62 @@ public class PiccodeGfxModule {
 	public static void addFunctions() {
 		NativeFunctionFactory.create("get_gfx", List.of(), (args, namedArgs, frame) -> {
 			var gfx = CanvasFrame.gfx;
-			var obj = Context.getObject(gfx.hashCode());
-			if (obj == null) {
-				Context.allocate(gfx);
-				return makeObj(gfx);
-			}
-			return makeObj(gfx);
+			return new PiccodeReference(gfx);
 		}, null);
 
-		NativeFunctionFactory.create("draw_line", List.of("ctx", "x1", "y1", "x2", "y2"), (args, namedArgs, frame) -> {
+		NativeFunctionFactory.create("gfx_from_rect", List.of("ctx", "x", "y", "w", "h"), (args, namedArgs, frame) -> {
 			var _ctx = namedArgs.get("ctx");
-			var _x1 = namedArgs.get("x1");
-			var _y1 = namedArgs.get("y1");
-			var _x2 = namedArgs.get("x2");
-			var _y2 = namedArgs.get("y2");
+			var x = namedArgs.get("x");
+			var y = namedArgs.get("y");
+			var w = namedArgs.get("w");
+			var h = namedArgs.get("h");
 
-			var ctx = frame == null ? 
-					Context.top
-					: Context.getContextAt(frame);
+			var ctx = frame == null
+							? Context.top
+							: Context.getContextAt(frame);
 			var caller = ctx.getTopFrame().caller;
-			
-			PiccodeValue.verifyType(caller, _ctx, Type.OBJECT);
-			PiccodeValue.verifyType(caller, _x1, Type.NUMBER);
-			PiccodeValue.verifyType(caller, _y1, Type.NUMBER);
-			PiccodeValue.verifyType(caller, _x2, Type.NUMBER);
-			PiccodeValue.verifyType(caller, _y2, Type.NUMBER);
 
-			var obj = (PiccodeObject) _ctx;
-			var map = obj.obj;
-			if (!map.containsKey("hash")) {
-				throw new PiccodeException(caller.file, caller.line, caller.column, "Context is not an object");
-			}
-			
-			var _hash = map.get("hash");
-			PiccodeValue.verifyType(caller, _hash, Type.NUMBER);
-			var hash = (int) (double) ((PiccodeNumber) _hash).raw();
-			var _gfx = Context.getObject(hash);
-			if (_gfx == null) {
-				throw new PiccodeException(caller.file, caller.line, caller.column, "Context is not allocated");
-			}
+			PiccodeValue.verifyType(caller, _ctx, Type.REFERENCE);
+			PiccodeValue.verifyType(caller, x, Type.NUMBER);
+			PiccodeValue.verifyType(caller, y, Type.NUMBER);
+			PiccodeValue.verifyType(caller, w, Type.NUMBER);
+			PiccodeValue.verifyType(caller, h, Type.NUMBER);
+
+			var obj = (PiccodeReference) _ctx;
+			var _gfx = obj.deref();
 			if (!(_gfx instanceof Graphics2D)) {
 				throw new PiccodeException(caller.file, caller.line, caller.column, "Context is not a correct object. Expected Graphics2D");
 			}
 
 			var gfx = (Graphics2D) _gfx;
-			var x1 = (int) (double) ((PiccodeNumber) _x1).raw();
-			var y1 = (int) (double) ((PiccodeNumber) _y1).raw();
-			var x2 = (int) (double) ((PiccodeNumber) _x2).raw();
-			var y2 = (int) (double) ((PiccodeNumber) _y2).raw();
+			var _x = (int) (double) ((PiccodeNumber) x).raw();
+			var _y = (int) (double) ((PiccodeNumber) y).raw();
+			var _w = (int) (double) ((PiccodeNumber) w).raw();
+			var _h = (int) (double) ((PiccodeNumber) h).raw();
 
-			gfx.drawLine(x1, y1, x2, y2);
-			return obj;
+			var gfx2 = (Graphics2D) gfx.create(_x, _y, _w, _h);
+			return new PiccodeReference(gfx2);
 		}, null);
-		
+		NativeFunctionFactory.create("gfx_from", List.of("ctx"), (args, namedArgs, frame) -> {
+			var _ctx = namedArgs.get("ctx");
+
+			var ctx = frame == null
+							? Context.top
+							: Context.getContextAt(frame);
+			var caller = ctx.getTopFrame().caller;
+
+			PiccodeValue.verifyType(caller, _ctx, Type.REFERENCE);
+			var obj = (PiccodeReference) _ctx;
+			var _gfx = obj.deref();
+			if (!(_gfx instanceof Graphics2D)) {
+				throw new PiccodeException(caller.file, caller.line, caller.column, "Context is not a correct object. Expected Graphics2D");
+			}
+
+			var gfx = (Graphics2D) _gfx;
+
+			var gfx2 = (Graphics2D) gfx.create();
+			return new PiccodeReference(gfx2);
+		}, null);
 	}
 
-	private static PiccodeValue makeObj(Graphics2D obj) {
-		var _obj = new HashMap<String, PiccodeValue>();
-		_obj.put("hash", new PiccodeNumber(obj.hashCode()));
-		_obj.put("class", new PiccodeString(obj.getClass().getName()));
-		return new PiccodeObject(_obj);
-	}
 }
