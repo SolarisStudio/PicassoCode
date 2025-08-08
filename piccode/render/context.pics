@@ -9,7 +9,7 @@ Render :: module {
   //   None
   //
   // Returns:
-  //   - (Reference) an handler to the Graphics2D. 
+  //   - (Reference) a handler to the Graphics2D. 
   getContext :: () = pic_nat_get_gfx()
 
 }

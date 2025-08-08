@@ -30,7 +30,7 @@ Pen :: module {
   drawRect :: (ctx, x, y, w, h) = pic_nat_draw_rect(ctx, x, y, w, h)
 
   // Function: drawRoundRect
-  // Draws a rect inside the specified context, based on the provided coordinates
+  // Draws a rounded rectangle inside the specified context, based on the provided coordinates
   //
   // Parameters:
   //   ctx - (Reference) The graphic context

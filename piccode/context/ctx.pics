@@ -14,8 +14,8 @@ Context :: module {
   //   h - (Number) The height
   //
   // Returns:
-  //   - (Reference) A modified context with the rendered element. 
-  fromRect :: (ctx, x, y, w, h) = pic_nat_from_rect(ctx, x, y, w, h)
+  //   - (Reference) A new graphics sub-context derived from the given context.
+  fromRect :: (ctx, x, y, w, h) = pic_nat_gfx_from_rect(ctx, x, y, w, h)
 
   // Function: from
   // Creates a new context based on the one provided
@@ -24,7 +24,16 @@ Context :: module {
   //   ctx - (Reference) The graphic context
   //
   // Returns:
-  //   - (Reference) A modified context with the rendered element. 
-  from:: (ctx) = pic_nat_from_rect(ctx)
+  //   - (Reference)  A new graphics context derived from the given context.
+  from :: (ctx) = pic_nat_gfx_from(ctx)
 
+  // Function: drop
+  // Frees the given context
+  //
+  // Parameters:
+  //   ctx - (Reference) The graphic context
+  //
+  // Returns:
+  //   - (Unit) Nothing
+  drop :: (ctx) = pic_nat_gfx_(ctx)
 }
