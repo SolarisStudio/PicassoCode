@@ -81,6 +81,26 @@ public class PiccodeGfxModule {
 			var gfx2 = (Graphics2D) gfx.create();
 			return new PiccodeReference(gfx2);
 		}, null);
+		
+		NativeFunctionFactory.create("gfx_drop", List.of("ctx"), (args, namedArgs, frame) -> {
+			var _ctx = namedArgs.get("ctx");
+
+			var ctx = frame == null
+							? Context.top
+							: Context.getContextAt(frame);
+			var caller = ctx.getTopFrame().caller;
+
+			PiccodeValue.verifyType(caller, _ctx, Type.REFERENCE);
+			var obj = (PiccodeReference) _ctx;
+			var _gfx = obj.deref();
+			if (!(_gfx instanceof Graphics2D)) {
+				throw new PiccodeException(caller.file, caller.line, caller.column, "Context is not a correct object. Expected Graphics2D");
+			}
+
+			var gfx = (Graphics2D) _gfx;
+			gfx.dispose();
+			return new PiccodeUnit();
+		}, null);
 	}
 
 }
