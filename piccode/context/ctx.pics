@@ -1,0 +1,30 @@
+
+// Module: Context
+// Contains functions for creating contexts
+Context :: module {
+
+  // Function: fromRect
+  // Creates a new context based on the one provided
+  //
+  // Parameters:
+  //   ctx - (Reference) The graphic context
+  //   x - (Number) The x position
+  //   y - (Number) The y position
+  //   w - (Number) The width
+  //   h - (Number) The height
+  //
+  // Returns:
+  //   - (Reference) A modified context with the rendered element. 
+  fromRect :: (ctx, x, y, w, h) = pic_nat_from_rect(ctx, x, y, w, h)
+
+  // Function: from
+  // Creates a new context based on the one provided
+  //
+  // Parameters:
+  //   ctx - (Reference) The graphic context
+  //
+  // Returns:
+  //   - (Reference) A modified context with the rendered element. 
+  from:: (ctx) = pic_nat_from_rect(ctx)
+
+}

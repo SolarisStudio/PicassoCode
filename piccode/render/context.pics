@@ -9,21 +9,8 @@ Render :: module {
   //   None
   //
   // Returns:
-  //   - (Object) an handler to the Graphics2D. 
+  //   - (Reference) an handler to the Graphics2D. 
   getContext :: () = pic_nat_get_gfx()
 
-  // Function: drawLine
-  // Draws a line inside the specified context, based on the provided coordinates
-  //
-  // Parameters:
-  //   ctx - (Object) The graphic context
-  //   startx - (Number) The start x position
-  //   starty - (Number) The start y position
-  //   endx - (Number) The end x position
-  //   endy - (Number) The end y position
-  //
-  // Returns:
-  //   - (Object) A modified context with the rendered element. 
-  drawLine :: (ctx, startx, starty, endx, endy) = pic_nat_draw_line(ctx, startx, starty, endx, endy)
 }
 
