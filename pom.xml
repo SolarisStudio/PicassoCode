@@ -77,6 +77,12 @@
 			<artifactId>PiccodeScript</artifactId>
 			<version>main-SNAPSHOT</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.github.Glimmr-Lang</groupId>
+			<artifactId>JHLabs</artifactId>
+			<version>main-SNAPSHOT</version>
+		</dependency>
 
 	</dependencies>
 
