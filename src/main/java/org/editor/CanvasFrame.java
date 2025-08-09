@@ -2,6 +2,7 @@ package org.editor;
 
 import com.vlsolutions.swing.docking.DockKey;
 import com.vlsolutions.swing.docking.Dockable;
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -21,6 +22,7 @@ import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -46,6 +48,7 @@ public class CanvasFrame extends JPanel implements MouseListener, MouseMotionLis
 
 	private int lastMouseX, lastMouseY;
 	private BufferedImage gridImage;
+	private BufferedImage render;
 	private Point lastDragPoint;
 	public static Graphics2D gfx = null;
 	private long lastTime;
@@ -66,17 +69,13 @@ public class CanvasFrame extends JPanel implements MouseListener, MouseMotionLis
 	private static CanvasFrame _the = null;
 	private DockKey key = new DockKey("canvas");
 
-	public static String code = null;
-	public static String file = null;
-	public static boolean start = false;
-
 	private CanvasFrame() {
 		super(new BorderLayout());
 		this.setBackground(new Color(18, 18, 18));
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 		drawGrid();
-		setPreferredSize(new Dimension(getWidth(), getHeight()));
+		compile(() -> null);
 		Timer timer = new Timer(16, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				repaint(getVisibleRect());
@@ -108,28 +107,19 @@ public class CanvasFrame extends JPanel implements MouseListener, MouseMotionLis
 		Graphics2D g2 = (Graphics2D) g;
 
 		drawGrid();
-
 		g2.drawImage(gridImage, 0, 0, null);
 
 		// Smooth rendering
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.setColor(Color.BLACK);
-		gfx = g2;
-		if (start && file != null && code != null) {
-				AccessFrame.msgs.setText("");
-				compileFrame();
-		}
 
+		if (render != null) {
+			g2.drawImage(render, 0, 0, null);
+		}
 		drawSelection(g2);
 		if (showHighlight) {
 			drawCrosshair(g2);
 		}
-	}
-
-	private PiccodeValue compileFrame() {
-		Context.top.resetContext();
-		var result = Compiler.compile(file, code);
-		return result;
 	}
 
 	private void drawSelection(Graphics2D g2) {
@@ -306,8 +296,33 @@ public class CanvasFrame extends JPanel implements MouseListener, MouseMotionLis
 
 		lastGridOffsetX = offsetX;
 		lastGridOffsetY = offsetY;
+		g2.dispose();
 	}
 
+	public void compile(Supplier<PiccodeValue> fx) {
+		int width = getWidth();
+		int height = getHeight();
+		if (width <= 0 || height <= 0) {
+			return;
+		}
+
+		render = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+		// Get the Graphics2D object
+		gfx = render.createGraphics();
+
+		// Enable transparency by drawing a fully transparent background
+		gfx.setComposite(AlphaComposite.Clear);
+		gfx.fillRect(0, 0, width, height);
+
+		gfx.setColor(Color.BLACK);
+		// Switch back to normal composite mode for drawing
+		gfx.setComposite(AlphaComposite.SrcOver);
+
+		fx.get();
+	}
+
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 	}

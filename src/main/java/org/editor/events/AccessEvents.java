@@ -29,9 +29,7 @@ public class AccessEvents {
 
 		var file = ed.file.toString();
 		var code = ed.textArea.getText();
-		CanvasFrame.file = file;
-		CanvasFrame.code = code;
-		CanvasFrame.start = true;
+		CanvasFrame.the().compile(() -> Compiler.compile(file, code));
 		AccessFrame.writeSuccess("Compilation started: ");
 	}
 
