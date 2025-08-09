@@ -2,7 +2,10 @@ package org.piccode.piccode;
 
 import org.editor.AccessFrame;
 import org.editor.EditorWindow;
+import org.editor.nativemods.PiccodeBrushedMetalFilterModule;
+import org.editor.nativemods.PiccodeFilterModule;
 import org.editor.nativemods.PiccodeGfxModule;
+import org.editor.nativemods.PiccodeImageModule;
 import org.editor.nativemods.PiccodePenModule;
 import org.piccode.backend.Compiler;
 import org.piccode.piccodescript.ErrorAsciiKind;
@@ -24,5 +27,8 @@ public class Piccode {
 	private static void initializeNativeAppModules() {
 		Compiler.addNativeFunctions(PiccodeGfxModule::addFunctions);
 		Compiler.addNativeFunctions(PiccodePenModule::addFunctions);
+		Compiler.addNativeFunctions(PiccodeBrushedMetalFilterModule::addFunctions);
+		Compiler.addNativeFunctions(PiccodeFilterModule::addFunctions);
+		Compiler.addNativeFunctions(PiccodeImageModule::addFunctions);
 	}
 }
