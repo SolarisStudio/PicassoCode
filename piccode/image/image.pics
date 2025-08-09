@@ -1,0 +1,17 @@
+
+Image :: module {
+  new :: (w, h) = pic_nat_image_new(w, h)
+  newWithType :: (w, h, type) = pic_nat_image_new_typed(w, h, type)
+  getContext :: (img) = pic_nat_image_get_context(img)
+  fromPath :: (path) = pic_nat_image_new_from_path(path)
+
+  resize :: (img, w, h) = pic_nat_image_resize(img, w, h)
+
+  Type :: module {
+		RGB      := 1
+    ARGB     := 2
+    ARGB_PRE := 3
+		BGR      := 1
+  }
+}
+

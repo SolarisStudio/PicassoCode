@@ -1,0 +1,5 @@
+
+Filter :: module {
+  apply :: (filter, image) = pic_nat_filter_apply(filter, image)
+}
+

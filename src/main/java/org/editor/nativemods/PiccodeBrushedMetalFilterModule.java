@@ -74,9 +74,9 @@ public class PiccodeBrushedMetalFilterModule {
 			}
 
 			var filter = (BrushedMetalFilter) _filter_object;
-			var _amount = (int) (double) ((PiccodeNumber) amount).raw();
+			var _amount = (float) (double) ((PiccodeNumber) amount).raw();
 
-			filter.setRadius(_amount);
+			filter.setAmount(_amount);
 			
 			return new PiccodeReference(_filter_object);
 		}, null);
@@ -100,9 +100,9 @@ public class PiccodeBrushedMetalFilterModule {
 			}
 
 			var filter = (BrushedMetalFilter) _filter_object;
-			var _shine = (int) (double) ((PiccodeNumber) shine).raw();
+			var _shine = (float) (double) ((PiccodeNumber) shine).raw();
 
-			filter.setRadius(_shine);
+			filter.setShine(_shine);
 			
 			return new PiccodeReference(_filter_object);
 		}, null);

@@ -2,10 +2,15 @@ package org.editor.nativemods;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import javax.imageio.ImageIO;
 import org.editor.CanvasFrame;
+import org.editor.icons.ImageLoader;
 import org.piccode.rt.Context;
 import org.piccode.rt.PiccodeException;
 import org.piccode.rt.PiccodeNumber;
@@ -66,6 +71,57 @@ public class PiccodeImageModule {
 			return new PiccodeReference(image);
 		}, null);
 	
+		NativeFunctionFactory.create("image_new_from_path", List.of("path"), (args, namedArgs, frame) -> {
+			var path = namedArgs.get("path");
+
+			var ctx = frame == null ? 
+					Context.top
+					: Context.getContextAt(frame);
+			var caller = ctx.getTopFrame().caller;
+			
+			PiccodeValue.verifyType(caller, path, Type.STRING);
+
+			try {
+				BufferedImage image = ImageIO.read(new File(path.raw().toString()));
+				return new PiccodeReference(image);
+			} catch (IOException ex) {
+				var def = (BufferedImage) ImageLoader.getImage(-1);
+				return new PiccodeReference(def);
+			}
+		}, null);
+
+		NativeFunctionFactory.create("image_resize", List.of("img" ,"w", "h"), (args, namedArgs, frame) -> {
+			var img = namedArgs.get("img");
+			var w = namedArgs.get("w");
+			var h = namedArgs.get("h");
+
+			var ctx = frame == null ? 
+					Context.top
+					: Context.getContextAt(frame);
+			var caller = ctx.getTopFrame().caller;
+			
+			PiccodeValue.verifyType(caller, img, Type.REFERENCE);
+			PiccodeValue.verifyType(caller, w, Type.NUMBER);
+			PiccodeValue.verifyType(caller, h, Type.NUMBER);
+
+			var _buffered_image = ((PiccodeReference)img).deref();
+
+			if (!(_buffered_image instanceof BufferedImage)) {
+				throw new PiccodeException(caller.file, caller.line, caller.column, "Expected a buffer image. Found " + _buffered_image);
+			}
+
+			var bufferedmage = (BufferedImage) _buffered_image;
+
+			var _w = (int) (double) ((PiccodeNumber) w).raw();
+			var _h = (int) (double) ((PiccodeNumber) h).raw();
+
+			Image resultingImage = bufferedmage.getScaledInstance(_w, _h, Image.SCALE_DEFAULT);
+			BufferedImage outputImage = new BufferedImage(_w, _h, BufferedImage.TYPE_INT_RGB);
+			outputImage.getGraphics().drawImage(resultingImage, 0, 0, null);
+
+			return new PiccodeReference(outputImage);
+		}, null);
+
 		NativeFunctionFactory.create("image_get_context", List.of("img"), (args, namedArgs, frame) -> {
 			var img = namedArgs.get("img");
 

@@ -2,6 +2,7 @@ package org.editor.nativemods;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.List;
 import org.editor.CanvasFrame;
@@ -163,6 +164,70 @@ public class PiccodePenModule {
 			var _h = (int) (double) ((PiccodeNumber) h).raw();
 
 			gfx.drawOval(_x, _y, _w, _h);
+			return obj;
+		}, null);
+		
+		NativeFunctionFactory.create("draw_image", List.of("ctx", "img", "x", "y"), (args, namedArgs, frame) -> {
+			var _ctx = namedArgs.get("ctx");
+			var _img = namedArgs.get("img");
+			var x = namedArgs.get("x");
+			var y = namedArgs.get("y");
+
+			var ctx = frame == null ? 
+					Context.top
+					: Context.getContextAt(frame);
+			var caller = ctx.getTopFrame().caller;
+			
+			PiccodeValue.verifyType(caller, _ctx, Type.REFERENCE);
+			PiccodeValue.verifyType(caller, _img, Type.REFERENCE);
+			PiccodeValue.verifyType(caller, x, Type.NUMBER);
+			PiccodeValue.verifyType(caller, y, Type.NUMBER);
+
+			var obj = (PiccodeReference) _ctx;
+			var imgObj = (PiccodeReference) _img;
+			var _gfx = obj.deref();
+			var _image = imgObj.deref();
+			if (!(_gfx instanceof Graphics2D)) {
+				throw new PiccodeException(caller.file, caller.line, caller.column, "Context is not a correct object. Expected Graphics2D");
+			}
+			if (!(_image instanceof BufferedImage)) {
+				throw new PiccodeException(caller.file, caller.line, caller.column, "Image in not a correct object. Expected a BufferedImage but found" + _image);
+			}
+
+			var gfx = (Graphics2D) _gfx;
+			var img = (BufferedImage) _image;
+			var _x = (int) (double) ((PiccodeNumber) x).raw();
+			var _y = (int) (double) ((PiccodeNumber) y).raw();
+
+			gfx.drawImage(img, _x, _y, null);
+			return obj;
+		}, null);
+		NativeFunctionFactory.create("draw_text", List.of("ctx", "text", "x", "y"), (args, namedArgs, frame) -> {
+			var _ctx = namedArgs.get("ctx");
+			var _text = namedArgs.get("text");
+			var x = namedArgs.get("x");
+			var y = namedArgs.get("y");
+
+			var ctx = frame == null ? 
+					Context.top
+					: Context.getContextAt(frame);
+			var caller = ctx.getTopFrame().caller;
+			
+			PiccodeValue.verifyType(caller, _ctx, Type.REFERENCE);
+			PiccodeValue.verifyType(caller, _text, Type.STRING);
+			PiccodeValue.verifyType(caller, x, Type.NUMBER);
+			PiccodeValue.verifyType(caller, y, Type.NUMBER);
+
+			var obj = (PiccodeReference) _ctx;
+			var _gfx = obj.deref();
+			if (!(_gfx instanceof Graphics2D)) {
+				throw new PiccodeException(caller.file, caller.line, caller.column, "Context is not a correct object. Expected Graphics2D");
+			}
+			var gfx = (Graphics2D) _gfx;
+			var _x = (int) (double) ((PiccodeNumber) x).raw();
+			var _y = (int) (double) ((PiccodeNumber) y).raw();
+
+			gfx.drawString(_text.toString(), _x, _y);
 			return obj;
 		}, null);
 	}

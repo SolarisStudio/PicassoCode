@@ -59,5 +59,8 @@ Pen :: module {
   //   - (Reference) A modified context with the rendered element. 
   drawOval :: (ctx, x, y, w, h) = pic_nat_draw_oval(ctx, x, y, w, h)
 
+  drawImage :: (ctx, image, x, y) = pic_nat_draw_image(ctx, image, x, y)
+  
+  drawText :: (ctx, text, x, y) = pic_nat_draw_text(ctx, text, x, y)
 }
 

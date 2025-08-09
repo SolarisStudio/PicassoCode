@@ -1,0 +1,8 @@
+
+
+BrushMetal :: module {
+  new :: () = pic_nat_brush_metal_new()
+  radius :: (filter, radius) = pic_nat_brush_metal_set_rad(filter, radius)
+  amount :: (filter, radius) = pic_nat_brush_metal_set_amount(filter, radius)
+  shine :: (filter, radius) = pic_nat_brush_metal_set_shine(filter, radius)
+}

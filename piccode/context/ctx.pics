@@ -35,5 +35,5 @@ Context :: module {
   //
   // Returns:
   //   - (Unit) Nothing
-  drop :: (ctx) = pic_nat_gfx_(ctx)
+  drop :: (ctx) = pic_nat_gfx_drop(ctx)
 }
