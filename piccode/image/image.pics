@@ -8,10 +8,10 @@ Image :: module {
   resize :: (img, w, h) = pic_nat_image_resize(img, w, h)
 
   Type :: module {
-		RGB      := 1
+    RGB      := 1
     ARGB     := 2
     ARGB_PRE := 3
-		BGR      := 1
+    BGR      := 4
   }
 }
 
