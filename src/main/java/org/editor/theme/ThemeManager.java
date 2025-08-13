@@ -25,6 +25,10 @@ public class ThemeManager {
 	public static void registerEditor(CodeEditor editor) {
 		editors.add(editor);
 	}
+	
+	public static void removeEditor(CodeEditor editor) {
+		editors.remove(editor);
+	}
 
 	public static void registerPlugin(PiccodePluginInterface plugin) {
 		plugins.add(plugin);

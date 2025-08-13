@@ -30,6 +30,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaHighlighter;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.TextEditorPane;
+import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.templates.CodeTemplate;
 import org.fife.ui.rsyntaxtextarea.templates.StaticCodeTemplate;
@@ -296,5 +297,16 @@ public class CodeEditor extends JPanel implements Dockable {
 	@Override
 	public Component getComponent() {
 		return this;
+	}
+
+	public void setThemeMode(boolean dark) {
+		var themeName = dark ? "monokai" : "vs";
+		try {
+			Theme theme = Theme.load(getClass().getResourceAsStream(
+							"/org/fife/ui/rsyntaxtextarea/themes/" + themeName +".xml"));
+			theme.apply(textArea);
+		} catch (IOException ioe) { // Never happens
+			ioe.printStackTrace();
+		}
 	}
 }
