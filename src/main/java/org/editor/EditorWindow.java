@@ -73,9 +73,9 @@ public final class EditorWindow extends JFrame implements SearchListener {
 	private CollapsibleSectionPanel csp;
 	public static FindDialog findDialog;
 	public static ReplaceDialog replaceDialog;
-	private DockingDesktop desk = new DockingDesktop();
+	public static DockingDesktop desk = new DockingDesktop();
 	private static CodeEditor selected = null;
-	private static boolean dark = true;
+	public static boolean dark = true;
 
 	public static EditorWindow the() {
 		if (win == null) {
@@ -89,17 +89,13 @@ public final class EditorWindow extends JFrame implements SearchListener {
 	public EditorWindow() {
 		super("Piccode - DashBoard");
 
+		ThemeManager.setFlatLaf(dark);
 		DockingUISettings.getInstance().installUI();
 		customizeDock();
 
 		UIManager.put("Tree.collapsedIcon", UIManager.getIcon("Tree.collapsedIcon"));
 		UIManager.put("Tree.expandedIcon", UIManager.getIcon("Tree.expandedIcon")); 
 		
-		try {
-			UIManager.setLookAndFeel(new FlatLightLaf());
-		} catch (Exception ex) {
-			System.err.println("Failed to initialize LaF");
-		}
 
 		new CodeEditor();
 		root = getRootPane();

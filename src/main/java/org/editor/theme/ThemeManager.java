@@ -6,7 +6,6 @@ import com.piccode.piccodeplugin.PiccodePluginInterface;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.UIManager;
 import org.editor.CodeEditor;
 
 /**
