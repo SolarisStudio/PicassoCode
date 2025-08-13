@@ -27,6 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.plaf.basic.BasicGraphicsUtils;
+import org.editor.theme.ThemeManager;
 import org.piccode.ast.Ast;
 import org.piccode.backend.Compiler;
 import org.piccode.rt.Context;
@@ -254,12 +255,12 @@ public class CanvasFrame extends JPanel implements MouseListener, MouseMotionLis
 		gridImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2 = gridImage.createGraphics();
 		// Fill background
-		g2.setColor(Color.WHITE);
+		g2.setColor(ThemeManager.RENDER_BG);
 		g2.fillRect(0, 0, getWidth(), getHeight());
 
 		if (showGrid) {
 			// Draw grid
-			g2.setColor(new Color(230, 230, 230));
+			g2.setColor(ThemeManager.RENDER_GRID);
 			for (int x = -offsetX % SCALE; x < getWidth(); x += SCALE) {
 				g2.drawLine(x, 0, x, getHeight());
 			}
@@ -270,7 +271,7 @@ public class CanvasFrame extends JPanel implements MouseListener, MouseMotionLis
 
 		if (showRuler) {
 			// Draw axis numbers
-			g2.setColor(Color.GRAY);
+			g2.setColor(ThemeManager.RENDER_GRID);
 			for (int x = -offsetX % SCALE; x < getWidth(); x += SCALE) {
 				int value = (x + offsetX) / SCALE;
 				g2.drawString(Integer.toString(value * SCALE), x + 2, 12);
@@ -286,7 +287,7 @@ public class CanvasFrame extends JPanel implements MouseListener, MouseMotionLis
 		g2.setColor(Color.RED);
 		g2.drawString("y", 8, getHeight() - 5);
 
-		g2.setColor(Color.GRAY);
+		g2.setColor(ThemeManager.RENDER_TXT2);
 		int x = (-offsetX % SCALE + offsetX) / SCALE;
 		int y = (-offsetY % SCALE + offsetY) / SCALE;
 		x *= SCALE;
