@@ -38,11 +38,11 @@ public class AboutPanel extends javax.swing.JPanel {
     jLabel1.setName(""); // NOI18N
 
     jLabel4.setFont(new java.awt.Font("sansserif", 1, 13)); // NOI18N
-    jLabel4.setText("Brought to you by Glimmir developers");
+    jLabel4.setText("Brought to you by Solaris Studio developers");
 
     jTextPane1.setEditable(false);
     jTextPane1.setBackground(new java.awt.Color(255, 255, 255));
-    jTextPane1.setText("\ndrawString(\"\n+--------------------------------------------+\n |  ▄▖▘                                     ▌        |\n |  ▙▌▌▛▘▀▌▛▘▛▘▛▌▛▘▛▌▛▌█▌   |\n |  ▌  ▌▙▖█▌▄▌▄▌▙▌▙▖▙▌▙▌▙▖   |\n |        Creativity + Logic + Math        |\n+---------------------------------------------+\n\", 0, 0)\n\nBrought to you by glimmr developers\n\nLead developer: Gama Sibusiso Vincent\nAI and Plugin intergration: TODO\nDocumenentation: TODO\n\nCreated 100% in java using java swing, antlr4 and flatlaf. \nIcons pack dowloaded from icons8");
+    jTextPane1.setText("\nPen::drawText(\"\n+--------------------------------------------+\n |  ▄▖▘                                     ▌        |\n |  ▙▌▌▛▘▀▌▛▘▛▘▛▌▛▘▛▌▛▌█▌   |\n |  ▌  ▌▙▖█▌▄▌▄▌▙▌▙▖▙▌▙▌▙▖   |\n |        Creativity + Logic + Math        |\n+---------------------------------------------+\n\", 0, 0)\n\nBrought to you by glimmr developers\n\nLead developer: Gama Sibusiso Vincent\nAI and Plugin intergration: TODO\nDocumenentation: TODO\n\nCreated 100% in java using java swing, antlr4 and flatlaf. \nIcons pack dowloaded from icons8");
     jTextPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
     jScrollPane1.setViewportView(jTextPane1);
 
